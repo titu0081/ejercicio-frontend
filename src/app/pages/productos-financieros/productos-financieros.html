@@ -19,7 +19,7 @@
     <div class="tablaScroll">
       <table class="tabla">
         <thead>
-          @if (cargando) {
+          @if (cargando === true) {
           <tr class="skeleton-row">
             <td colspan="6">
               <div class="skeleton-loader"></div>
@@ -69,9 +69,7 @@
                     class="menu-opciones"
                     [class.activo]="menuActivo === $index"
                   >
-                    <button (click)="editarElemento(producto, $index)">
-                      Editar
-                    </button>
+                    <button (click)="editarElemento($index)">Editar</button>
                     <button (click)="eliminarElemento(producto)">
                       Eliminar
                     </button>

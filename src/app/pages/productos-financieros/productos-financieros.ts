@@ -8,11 +8,12 @@ import { ProductosServices } from '../../services/productos.services';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalService } from '../../services/modal.services';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-productos-financieros',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './productos-financieros.html',
   styleUrl: './productos-financieros.scss',
 })
@@ -40,22 +41,23 @@ export class ProductosFinancieros implements OnInit {
     this.productos = [];
     this.productosTodos = [];
     this.cargando = true;
+
     this.servicioProductos.servicioGet('bp/products').subscribe({
       next: (respuestaProductos) => {
         if (respuestaProductos.data.length > 0) {
           this.productos = [...respuestaProductos.data];
           this.productosTodos = [...respuestaProductos.data];
-          this.cargando = false;
-          this.actualizarProductosFiltrados();
-          this.cdr.detectChanges();
         } else {
-          this.cargando = false;
           this.productos = [];
         }
+        this.cargando = false;
+        this.actualizarProductosFiltrados();
+        this.cdr.detectChanges();
       },
       error: () => {
         this.cargando = false;
         this.productos = [];
+        this.cdr.detectChanges();
       },
     });
   }
@@ -102,7 +104,7 @@ export class ProductosFinancieros implements OnInit {
     }
   }
 
-  editarElemento(producto: any, indexProducto: number) {
+  editarElemento(indexProducto: number) {
     this.menuActivo = null;
     this.abrirFormulario(indexProducto);
   }
@@ -116,7 +118,6 @@ export class ProductosFinancieros implements OnInit {
       callbackConfirmar: () => {
         this.eliminarProducto(producto);
       },
-      callbackCancelar: () => {},
     });
   }
 
@@ -133,7 +134,6 @@ export class ProductosFinancieros implements OnInit {
     const urlEliminar = 'bp/products/' + productoEliminar.id;
     this.servicioProductos.servicioDelete(urlEliminar).subscribe({
       next: (respuestaProductos) => {
-        console.log('RespuestaServicio: ', respuestaProductos);
         this.mostrarProductos();
       },
       error: () => {

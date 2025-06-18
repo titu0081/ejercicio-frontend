@@ -2,9 +2,10 @@
   display: flex;
   align-items: center;
   background-color: white;
-  margin: 4rem 15rem; /* Margen por defecto (pantallas grandes) */
+  margin: 4rem 15rem;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-height: 19vh;
   height: 78vh;
   max-height: 100vh;
@@ -31,13 +32,56 @@
 
 .cabecera {
   width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 1rem 2rem;
+  height: 4rem;
+}
+
+.separadorC {
+  width: 100%;
+  margin: 0;
+}
+
+.titulo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.contenedorImg {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 1;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+img {
+  width: 2rem;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  width: calc(50% - 1rem); // 2 columnas con espacio
+  width: calc(50% - 1rem);
+  min-width: 10rem;
 
   label {
     font-weight: 600;
