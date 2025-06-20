@@ -47,7 +47,11 @@
           <tr>
             <td>
               <img
-                [src]="'assets/images/' + producto.logo"
+                [src]="'assets/images/' + (
+                  producto.logo === 'logoNTT.png' || producto.logo === 'nttDATA.png'
+                    ? producto.logo
+                    : 'noImage.png'
+                )"
                 alt="{{ producto.name }}"
                 class="logo-img"
               />

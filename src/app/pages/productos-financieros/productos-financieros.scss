@@ -84,6 +84,12 @@
   }
 }
 
+.tabla tbody tr:hover {
+  background-color: #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
 img.logo-img {
   width: 40px;
   height: auto;
