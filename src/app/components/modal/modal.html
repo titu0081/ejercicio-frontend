@@ -1,0 +1,34 @@
+<div class="overlay" *ngIf="(modalService.modalData$ | async) as modal">
+  <div class="modal">
+    <h1 *ngIf="modal.titulo" class="titulo">{{modal.titulo}}</h1>
+    <p>{{ modal.mensaje }}</p>
+    <hr class="separador" />
+    <div class="acciones">
+      <!-- Modal solo con botón confirmar -->
+      <ng-container *ngIf="modal.soloConfirmar; else confirmCancel">
+        <button
+          class="btnConfirmar"
+          (click)="modal.callbackConfirmar?.(); modalService.cerrarModal()"
+        >
+          {{ modal.confirmarTexto || 'Aceptar' }}
+        </button>
+      </ng-container>
+
+      <!-- Modal con confirmar + cancelar -->
+      <ng-template #confirmCancel>
+        <button
+          class="btnCancelar"
+          (click)="modal.callbackCancelar?.(); modalService.cerrarModal()"
+        >
+          {{ modal.cancelarTexto || 'Cancelar' }}
+        </button>
+        <button
+          class="btnConfirmar"
+          (click)="modal.callbackConfirmar?.(); modalService.cerrarModal()"
+        >
+          {{ modal.confirmarTexto || 'Confirmar' }}
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>

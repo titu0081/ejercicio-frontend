@@ -1,0 +1,110 @@
+<section class="fondo">
+  <div class="contenedorSuperior">
+    <div class="buscador">
+      <input
+        type="search"
+        name=""
+        id="inputBuscador"
+        placeholder="Search..."
+        (input)="filtrarLotes($event)"
+      />
+    </div>
+    <div class="botonAgregar">
+      <button type="button" class="btnAgregar" (click)="abrirFormulario()">
+        Agregar
+      </button>
+    </div>
+  </div>
+  <div class="contenedorTabla">
+    <div class="tablaScroll">
+      <table class="tabla">
+        <thead>
+          @if (cargando) {
+          <tr class="skeleton-row">
+            <td colspan="6">
+              <div class="skeleton-loader"></div>
+            </td>
+          </tr>
+          } @else {
+          <tr>
+            <th>Logo</th>
+            <th>Nombre del producto</th>
+            <th>Descripción</th>
+            <th>Fecha de iteración</th>
+            <th>Fecha de reestructuración</th>
+            <th></th>
+          </tr>
+          }
+        </thead>
+        <tbody>
+          @if (cargando) { @for (n of [1,2,3]; track $index) {
+          <tr class="skeleton-row">
+            <td colspan="6">
+              <div class="skeleton-loader"></div>
+            </td>
+          </tr>
+          } } @else { @for (producto of productosFiltrados; track $index) {
+          <tr>
+            <td>
+              <img
+                [src]="'assets/images/' + producto.logo"
+                alt="{{ producto.name }}"
+                class="logo-img"
+              />
+            </td>
+            <td>{{ producto.name }}</td>
+            <td>{{ producto.description }}</td>
+            <td>{{ producto.date_release }}</td>
+            <td>{{ producto.date_revision }}</td>
+            <td>
+              <div class="opciones">
+                <div class="menu-toggle">
+                  <img
+                    class="logo-img"
+                    src="assets/images/dropdown.png"
+                    alt="Menú"
+                    (click)="toggleMenu($event, $index)"
+                  />
+                  <div
+                    class="menu-opciones"
+                    [class.activo]="menuActivo === $index"
+                  >
+                    <button (click)="editarElemento(producto, $index)">
+                      Editar
+                    </button>
+                    <button (click)="eliminarElemento(producto)">
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6">
+              <div class="sinProductos">No hay productos disponibles.</div>
+            </td>
+          </tr>
+          } }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pieTabla">
+      <label>{{productosFiltrados.length}} Resultados</label>
+      <select
+        id="cantidad"
+        [(ngModel)]="cantidadSeleccionada"
+        (ngModelChange)="actualizarProductosFiltrados()"
+        class="seleccionador"
+      >
+        @for (cantidad of cantidadRegistros; track $index) {
+        <option [value]="cantidad">
+          {{ cantidad === 'TODOS' ? 'Todos' : cantidad }}
+        </option>
+        }
+      </select>
+    </div>
+  </div>
+</section>

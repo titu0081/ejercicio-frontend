@@ -1,0 +1,201 @@
+.fondo {
+  padding: 4rem 3rem;
+}
+
+.contenedorSuperior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btnAgregar {
+  background-color: #f5df66;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 7rem;
+  border: 0;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+#inputBuscador {
+  height: 2rem;
+  border: 0.1rem solid #d1d2d3;
+  border-radius: 0.5rem;
+  padding: 1rem 0.5rem;
+  margin-top: 1rem;
+}
+
+.contenedorTabla {
+  background-color: white;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.tablaScroll {
+  min-height: 19vh;
+  height: 50vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  position: relative;
+
+  @media (min-height: 800px) {
+    height: 65vh;
+  }
+
+  @media (min-height: 1000px) {
+    height: 75vh;
+  }
+
+  @media (min-height: 1200px) {
+    height: 75vh;
+  }
+
+  @media (min-height: 1400px) {
+    height: 75vh;
+  }
+}
+
+.tabla {
+  width: 100%;
+
+  border-collapse: collapse;
+  table-layout: auto;
+
+  thead {
+    background-color: #f9fafc;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    height: 4rem;
+  }
+
+  th,
+  td {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+    padding: 8px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+}
+
+img.logo-img {
+  width: 40px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.pieTabla {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sinProductos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem; // o el alto que necesites
+  font-weight: bold;
+  color: #666;
+}
+
+.seleccionador {
+  padding: 0.5rem 0.5rem;
+  width: 5rem;
+  border: 0.1rem solid #d1d2d3;
+  border-radius: 0.3rem;
+  text-align: center;
+  text-align-last: center;
+  cursor: pointer;
+}
+
+.opciones {
+  position: relative; /* Fundamental para que el dropdown se posicione respecto a esto */
+  display: inline-block;
+  width: max-content;
+}
+
+.menu-opciones {
+  display: none;
+  position: absolute;
+  top: 100%; /* Justo debajo del ícono */
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  z-index: 9999; /* Muy alto para que sobresalga sobre todo */
+  min-width: 140px;
+  max-width: 90vw;
+  box-sizing: border-box;
+}
+
+.menu-opciones.activo {
+  display: block;
+}
+
+.menu-opciones button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.menu-opciones button:hover {
+  background-color: #f0f0f0;
+}
+
+@media screen and (max-width: 600px) {
+  .menu-opciones {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  .menu-opciones {
+    left: 0;
+    right: auto;
+    min-width: 100px;
+    font-size: 0.85rem;
+  }
+}
+
+//SKELETON TABLA
+.skeleton-loader {
+  width: 100%;
+  height: 1.5rem;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-row td {
+  padding: 0.5rem;
+}

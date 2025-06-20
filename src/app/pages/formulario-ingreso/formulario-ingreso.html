@@ -1,0 +1,157 @@
+<section class="contenedorForm">
+  <div class="cabecera">
+    <h1>Formulario de Registro</h1>
+    <hr />
+  </div>
+  <div class="inputsForm">
+    <form [formGroup]="formulario" (ngSubmit)="guardarNuevo()">
+      <!-- ID -->
+      <div class="form-group">
+        <label for="id">ID</label>
+        <input
+          type="text"
+          id="id"
+          formControlName="id"
+          [ngClass]="{ 'input-error': id?.invalid && (id?.dirty || id?.touched) }"
+          placeholder="Ej: PROD001"
+        />
+        <small
+          class="error-text"
+          *ngIf="id?.hasError('required') && (id?.dirty || id?.touched)"
+        >
+          Este campo es requerido.
+        </small>
+        <small class="error-text" *ngIf="id?.hasError('minlength')">
+          Mínimo 3 caracteres.
+        </small>
+        <small class="error-text" *ngIf="id?.hasError('maxlength')">
+          Máximo 10 caracteres.
+        </small>
+        <small class="error-text" *ngIf="id?.hasError('idDuplicado')">
+          Este ID ya existe en la lista.
+        </small>
+        <small class="error-text" *ngIf="id?.hasError('idNoDisponible')">
+          Este ID ya está en uso (validado en servidor).
+        </small>
+      </div>
+
+      <!-- Nombre -->
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          [ngClass]="{ 'input-error': nombre?.invalid && (nombre?.dirty || nombre?.touched) }"
+          placeholder="Ej: Producto A"
+        />
+        <small
+          class="error-text"
+          *ngIf="nombre?.hasError('required') && (nombre?.dirty || nombre?.touched)"
+        >
+          Este campo es requerido.
+        </small>
+      </div>
+
+      <!-- Descripción -->
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <input
+          type="text"
+          id="descripcion"
+          formControlName="descripcion"
+          [ngClass]="{ 'input-error': descripcion?.invalid && (descripcion?.dirty || descripcion?.touched) }"
+          placeholder="Ej: Este producto es..."
+        />
+        <small
+          class="error-text"
+          *ngIf="descripcion?.hasError('required') && (descripcion?.dirty || descripcion?.touched)"
+        >
+          Este campo es requerido.
+        </small>
+        <small class="error-text" *ngIf="descripcion?.hasError('minlength')">
+          Mínimo 10 caracteres.
+        </small>
+        <small class="error-text" *ngIf="descripcion?.hasError('maxlength')">
+          Máximo 200 caracteres.
+        </small>
+      </div>
+
+      <!-- Logo -->
+      <div class="form-group">
+        <label for="logo">Logo</label>
+        <input
+          type="text"
+          id="logo"
+          formControlName="logo"
+          [ngClass]="{ 'input-error': logo?.invalid && (logo?.dirty || logo?.touched) }"
+          placeholder="URL del logo"
+        />
+        <small
+          class="error-text"
+          *ngIf="logo?.hasError('required') && (logo?.dirty || logo?.touched)"
+        >
+          Este campo es requerido.
+        </small>
+      </div>
+
+      <!-- Fecha Liberación -->
+      <div class="form-group">
+        <label for="fechaLiberacion">Fecha de Liberación</label>
+        <input
+          type="date"
+          id="fechaLiberacion"
+          formControlName="fechaLiberacion"
+          [ngClass]="{ 'input-error': fechaLiberacion?.invalid && (fechaLiberacion?.dirty || fechaLiberacion?.touched) }"
+        />
+        <small
+          class="error-text"
+          *ngIf="fechaLiberacion?.hasError('required') && (fechaLiberacion?.dirty || fechaLiberacion?.touched)"
+        >
+          Este campo es requerido.
+        </small>
+        <small
+          class="error-text"
+          *ngIf="fechaLiberacion?.hasError('fechaMenorAHoy') && (fechaLiberacion?.dirty || fechaLiberacion?.touched)"
+        >
+          La fecha debe ser hoy o posterior.
+        </small>
+      </div>
+
+      <!-- Fecha Revisión -->
+      <div class="form-group">
+        <label for="fechaRevision">Fecha de Revisión</label>
+        <input
+          type="date"
+          id="fechaRevision"
+          formControlName="fechaRevision"
+          [ngClass]="{ 'input-error': fechaRevision?.invalid && (fechaRevision?.dirty || fechaRevision?.touched) }"
+        />
+        <small
+          class="error-text"
+          *ngIf="fechaRevision?.hasError('required') && (fechaRevision?.dirty || fechaRevision?.touched)"
+        >
+          Este campo es requerido.
+        </small>
+        <small
+          class="error-text"
+          *ngIf="fechaRevision?.hasError('fechaNoEsUnAnioDespues') && (fechaRevision?.dirty || fechaRevision?.touched)"
+        >
+          Debe ser exactamente 1 año después de la fecha de liberación.
+        </small>
+      </div>
+      <div class="btnAccion">
+        <button type="button" (click)="reiniciar()" class="btnReiniciar">
+          Reiniciar
+        </button>
+        <button
+          type="submit"
+          class="btnGuardar"
+          [disabled]="formulario.invalid"
+        >
+          Enviar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
