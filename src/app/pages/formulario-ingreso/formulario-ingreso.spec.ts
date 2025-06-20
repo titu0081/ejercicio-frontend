@@ -23,8 +23,8 @@ describe('FormularioIngreso', () => {
     name: 'Tarjeta Titanium',
     logo: 'nttDATA.png',
     description: 'Tarjeta de crédito',
-    date_release: '2026-06-21',
-    date_revision: '2025-06-21',
+    date_release: '2025-06-21',
+    date_revision: '2026-06-21',
   };
 
   beforeEach(async () => {
@@ -96,6 +96,16 @@ describe('FormularioIngreso', () => {
     expect(component.idState).toBe(true);
     expect(component.formulario.get('id')?.disabled).toBe(true);
     expect(component.formulario.get('nombre')?.value).toBe(productoMock.name);
+    expect(component.formulario.get('descripcion')?.value).toBe(
+      productoMock.description
+    );
+    expect(component.formulario.get('logo')?.value).toBe(productoMock.logo);
+    expect(component.formulario.get('fechaLiberacion')?.value).toBe(
+      productoMock.date_release
+    );
+    expect(component.formulario.get('fechaRevision')?.value).toBe(
+      productoMock.date_revision
+    );
   });
 
   it('debe validar el formulario correctamente', fakeAsync(() => {

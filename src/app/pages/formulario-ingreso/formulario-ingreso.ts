@@ -269,8 +269,8 @@ export class FormularioIngreso {
         nombre: this.productoSeleccionado.name,
         descripcion: this.productoSeleccionado.description,
         logo: this.productoSeleccionado.logo,
-        fechaLiberacion: this.productoSeleccionado.date_revision,
-        fechaRevision: this.productoSeleccionado.date_release,
+        fechaLiberacion: this.productoSeleccionado.date_release,
+        fechaRevision: this.productoSeleccionado.date_revision,
       });
     }
   }

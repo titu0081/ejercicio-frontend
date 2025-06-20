@@ -86,8 +86,8 @@ export class ProductosFinancieros implements OnInit {
 
     this.router.navigate(['/formulario'], {
       state: {
-        productos: this.productos, // todo el arreglo
-        productoSeleccionado: producto, // uno específico
+        productos: this.productos,
+        productoSeleccionado: producto,
       },
     });
   }
@@ -121,6 +121,26 @@ export class ProductosFinancieros implements OnInit {
     });
   }
 
+  eliminarProducto(productoEliminar: any) {
+    const urlEliminar = 'bp/products/' + productoEliminar.id;
+    this.servicioProductos.servicioDelete(urlEliminar).subscribe({
+      next: () => {
+        // Elimina de la lista sin recargar desde el backend
+        this.productos = this.productos.filter(
+          (producto) => producto.id !== productoEliminar.id
+        );
+        this.productosTodos = [...this.productos];
+        this.actualizarProductosFiltrados();
+        this.cdr.detectChanges(); // 👈 Fuerza la actualización de la vista
+      },
+      error: () => {
+        this.cargando = false;
+        this.productos = [];
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
   actualizarProductosFiltrados() {
     if (this.cantidadSeleccionada === 'TODOS') {
       this.productosFiltrados = this.productos;
@@ -128,18 +148,5 @@ export class ProductosFinancieros implements OnInit {
       const cantidad = Number(this.cantidadSeleccionada);
       this.productosFiltrados = this.productos.slice(0, cantidad);
     }
-  }
-
-  eliminarProducto(productoEliminar: any) {
-    const urlEliminar = 'bp/products/' + productoEliminar.id;
-    this.servicioProductos.servicioDelete(urlEliminar).subscribe({
-      next: (respuestaProductos) => {
-        this.mostrarProductos();
-      },
-      error: () => {
-        this.cargando = false;
-        this.productos = [];
-      },
-    });
   }
 }
