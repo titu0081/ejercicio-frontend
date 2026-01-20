@@ -5,7 +5,7 @@
         type="search"
         name=""
         id="inputBuscador"
-        placeholder="Search..."
+        placeholder="Buscar productos..."
         (input)="filtrarLotes($event)"
       />
     </div>
@@ -19,7 +19,7 @@
     <div class="tablaScroll">
       <table class="tabla">
         <thead>
-          @if (cargando) {
+          @if (cargando === true) {
           <tr class="skeleton-row">
             <td colspan="6">
               <div class="skeleton-loader"></div>
@@ -30,7 +30,7 @@
             <th>Logo</th>
             <th>Nombre del producto</th>
             <th>Descripción</th>
-            <th>Fecha de iteración</th>
+            <th>Fecha de liberación</th>
             <th>Fecha de reestructuración</th>
             <th></th>
           </tr>
@@ -47,7 +47,11 @@
           <tr>
             <td>
               <img
-                [src]="'assets/images/' + producto.logo"
+                [src]="'assets/images/' + (
+                  producto.logo === 'banco.png' || producto.logo === 'bancoDinero.png'
+                    ? producto.logo
+                    : 'noImage.png'
+                )"
                 alt="{{ producto.name }}"
                 class="logo-img"
               />
@@ -57,25 +61,23 @@
             <td>{{ producto.date_release }}</td>
             <td>{{ producto.date_revision }}</td>
             <td>
-              <div class="opciones">
-                <div class="menu-toggle">
+              <div class="dropdown">
+                <button
+                  (click)="mostrarDropDown($event, $index)"
+                  class="dropbtn"
+                >
                   <img
                     class="logo-img"
                     src="assets/images/dropdown.png"
                     alt="Menú"
-                    (click)="toggleMenu($event, $index)"
                   />
-                  <div
-                    class="menu-opciones"
-                    [class.activo]="menuActivo === $index"
-                  >
-                    <button (click)="editarElemento(producto, $index)">
-                      Editar
-                    </button>
-                    <button (click)="eliminarElemento(producto)">
-                      Eliminar
-                    </button>
-                  </div>
+                </button>
+                <div
+                  class="dropdown-content"
+                  [class.show]="dropdownAbierto === $index"
+                >
+                  <a (click)="editarElemento($index)">Editar</a>
+                  <a (click)="eliminarElemento(producto)">Eliminar</a>
                 </div>
               </div>
             </td>

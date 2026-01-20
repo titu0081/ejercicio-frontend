@@ -14,7 +14,7 @@ interface ModalData {
 @Injectable({ providedIn: 'root' })
 export class ModalService {
   private modalDataSubject = new BehaviorSubject<ModalData | null>(null);
-  modalData$ = this.modalDataSubject.asObservable();
+  modalData = this.modalDataSubject.asObservable();
 
   abrirModal(data: ModalData) {
     this.modalDataSubject.next(data);

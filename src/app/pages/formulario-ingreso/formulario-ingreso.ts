@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProductosServices } from '../../services/productos.services';
 import { ModalService } from '../../services/modal.services';
+import { Producto, ProductoFormulario } from '../../models/producto.model';
+import { of, map, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-formulario-ingreso',
@@ -22,21 +24,24 @@ import { ModalService } from '../../services/modal.services';
 })
 export class FormularioIngreso {
   formulario: FormGroup;
-  productos: any[] = [];
-  productoSeleccionado: any = null;
+  productos: Producto[] = [];
+  productoSeleccionado: Producto | null = null;
   submitted: boolean = false;
   idState: boolean = false;
+  idLongitud: number = 10;
+  nombreLongitud: number = 100;
+  descripcionLongitud: number = 200;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private servicioProductos: ProductosServices,
-    private modal: ModalService
+    private modal: ModalService,
   ) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras?.state as {
-      productos: any[];
-      productoSeleccionado: any;
+      productos: Producto[];
+      productoSeleccionado: Producto;
     };
     this.idState = false;
     this.productos = state?.productos || [];
@@ -48,8 +53,9 @@ export class FormularioIngreso {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(10),
-          this.idNoExisteEnProductosValidator(),
         ],
+        asyncValidators: [this.idExisteEnBackendValidator()],
+        updateOn: 'change',
       }),
       nombre: this.fb.control('', {
         validators: [
@@ -90,11 +96,20 @@ export class FormularioIngreso {
     this.esEditar();
   }
 
-  idNoExisteEnProductosValidator() {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value || !this.productos) return null;
-      const existe = this.productos.some((p) => p.id === control.value);
-      return existe ? { idDuplicado: true } : null;
+  idExisteEnBackendValidator(): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      if (!control.value) return of(null);
+
+      return this.servicioProductos
+        .servicioGet(`bp/products/${control.value}`)
+        .pipe(
+          map((respuesta) => {
+            return respuesta ? { idDuplicado: true } : null;
+          }),
+          catchError(() => {
+            return of(null);
+          }),
+        );
     };
   }
 
@@ -109,7 +124,7 @@ export class FormularioIngreso {
       const hoySinHora = new Date(
         hoy.getFullYear(),
         hoy.getMonth(),
-        hoy.getDate()
+        hoy.getDate(),
       );
 
       return fechaIngresada >= hoySinHora ? null : { fechaMenorAHoy: true };
@@ -169,22 +184,22 @@ export class FormularioIngreso {
       name: nuevoProducto.nombre,
       logo: nuevoProducto.logo,
       description: nuevoProducto.descripcion,
-      date_release: nuevoProducto.fechaRevision,
-      date_revision: nuevoProducto.fechaLiberacion,
+      date_release: nuevoProducto.fechaLiberacion,
+      date_revision: nuevoProducto.fechaRevision,
     };
 
     if (!this.idState) {
       datosProducto.id = nuevoProducto.id;
     }
 
-    const peticion$ = this.idState
+    const peticion = this.idState
       ? this.servicioProductos.servicioPut(
           `bp/products/${nuevoProducto.id}`,
-          datosProducto
+          datosProducto,
         )
       : this.servicioProductos.servicioPost('bp/products', datosProducto);
 
-    peticion$.subscribe({
+    peticion.subscribe({
       next: (respuestaProductos) => {
         if (respuestaProductos?.data) {
           console.log('Productos Respuesta', respuestaProductos);
@@ -247,8 +262,8 @@ export class FormularioIngreso {
         nombre: this.productoSeleccionado.name,
         descripcion: this.productoSeleccionado.description,
         logo: this.productoSeleccionado.logo,
-        fechaLiberacion: this.productoSeleccionado.date_revision,
-        fechaRevision: this.productoSeleccionado.date_release,
+        fechaLiberacion: this.productoSeleccionado.date_release,
+        fechaRevision: this.productoSeleccionado.date_revision,
       });
     }
   }

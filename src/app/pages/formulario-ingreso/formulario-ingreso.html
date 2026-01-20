@@ -1,8 +1,17 @@
 <section class="contenedorForm">
   <div class="cabecera">
-    <h1>Formulario de Registro</h1>
-    <hr />
+    <div class="contenedorImg">
+      <img
+        src="assets/images/flecha.png"
+        alt="Volver"
+        (click)="regresarTabla()"
+      />
+    </div>
+    <div class="titulo">
+      <h1>Formulario de Registro</h1>
+    </div>
   </div>
+  <hr class="separadorC" />
   <div class="inputsForm">
     <form [formGroup]="formulario" (ngSubmit)="guardarNuevo()">
       <!-- ID -->
@@ -14,6 +23,7 @@
           formControlName="id"
           [ngClass]="{ 'input-error': id?.invalid && (id?.dirty || id?.touched) }"
           placeholder="Ej: PROD001"
+          [maxLength]="idLongitud"
         />
         <small
           class="error-text"
@@ -44,6 +54,7 @@
           formControlName="nombre"
           [ngClass]="{ 'input-error': nombre?.invalid && (nombre?.dirty || nombre?.touched) }"
           placeholder="Ej: Producto A"
+          [maxLength]="nombreLongitud"
         />
         <small
           class="error-text"
@@ -62,6 +73,7 @@
           formControlName="descripcion"
           [ngClass]="{ 'input-error': descripcion?.invalid && (descripcion?.dirty || descripcion?.touched) }"
           placeholder="Ej: Este producto es..."
+          [maxLength]="descripcionLongitud"
         />
         <small
           class="error-text"
