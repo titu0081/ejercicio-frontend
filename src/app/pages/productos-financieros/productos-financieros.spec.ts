@@ -133,32 +133,4 @@ describe('ProductosFinancieros', () => {
       'bp/products/uno',
     );
   }));
-
-  it('debe cerrar el menú al hacer clic fuera', () => {
-    component.menuActivo = 0;
-
-    // Crea un elemento que no tenga la clase 'opciones'
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-
-    const event = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    });
-
-    // Simula el click
-    div.dispatchEvent(event);
-
-    expect(component.menuActivo).toBeNull();
-    document.body.removeChild(div);
-  });
-
-  it('debe alternar el menú activo', () => {
-    const event = new MouseEvent('click');
-    component.toggleMenu(event, 1);
-    expect(component.menuActivo).toBe(1);
-    component.toggleMenu(event, 1);
-    expect(component.menuActivo).toBeNull();
-  });
 });

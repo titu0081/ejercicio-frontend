@@ -29,7 +29,7 @@ describe('Modal', () => {
         {
           provide: ModalService,
           useValue: {
-            modalData$: modalDataSubject.asObservable(),
+            modalData: modalDataSubject.asObservable(),
             cerrarModal: jest.fn(),
           },
         },

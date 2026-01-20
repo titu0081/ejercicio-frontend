@@ -57,23 +57,13 @@ export class ProductosFinancieros implements OnInit {
     }
   }
 
-  cerrarDropdownAlHacerClick() {
-    (window as any).onclick = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).matches('.dropbtn')) {
-        const dropdowns = document.getElementsByClassName('dropdown-content');
-        for (let i = 0; i < dropdowns.length; i++) {
-          const openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    };
+  @HostListener('document:click')
+  cerrarDropdown() {
+    this.dropdownAbierto = null;
   }
 
   ngOnInit() {
     this.mostrarProductos();
-    this.cerrarDropdownAlHacerClick();
   }
 
   ngAfterViewInit() {
@@ -144,7 +134,6 @@ export class ProductosFinancieros implements OnInit {
   }
 
   eliminarElemento(producto: Producto) {
-    this.cerrarDropdownAlHacerClick();
     this.modal.abrirModal({
       mensaje: '¿Está seguro de eliminar el producto ' + producto.name + '?',
       confirmarTexto: 'Confirmar',
