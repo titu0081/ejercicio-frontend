@@ -202,7 +202,6 @@ export class FormularioIngreso {
     peticion.subscribe({
       next: (respuestaProductos) => {
         if (respuestaProductos?.data) {
-          console.log('Productos Respuesta', respuestaProductos);
           this.verificarProductos();
           this.reiniciar();
           if (!this.idState) {

@@ -79,7 +79,7 @@ describe('FormularioIngreso', () => {
   });
 
   it('debe cargar datos cuando se edita un producto', () => {
-    // Simulamos que estamos editando un producto
+    // Simulamos que editamos el producto
     mockRouter.getCurrentNavigation.mockReturnValueOnce({
       extras: {
         state: {
@@ -110,7 +110,7 @@ describe('FormularioIngreso', () => {
 
   it('debe validar el formulario correctamente', fakeAsync(() => {
     // Configura el mock para la validación async del ID
-    mockProductosService.servicioGet.mockReturnValue(of(null)); // Simula que el ID no existe
+    mockProductosService.servicioGet.mockReturnValue(of(null)); // Simular que el ID no existe
 
     component.formulario.patchValue({
       id: 'test123',
@@ -119,13 +119,13 @@ describe('FormularioIngreso', () => {
       logo: 'logo.png',
       fechaLiberacion: new Date(Date.now() + 86400000)
         .toISOString()
-        .split('T')[0], // Mañana
+        .split('T')[0], // Día siguiente al actual
       fechaRevision: new Date(Date.now() + 86400000 * 366)
         .toISOString()
-        .split('T')[0], // 1 año + 1 día después
+        .split('T')[0], // Fecha 1 año + 1 día después
     });
 
-    // Espera a que se completen las validaciones async
+    // tick espera a que se completen las validaciones async
     tick();
     fixture.detectChanges();
 
@@ -190,16 +190,15 @@ describe('FormularioIngreso', () => {
       fechaRevision: fechaRevision.toISOString().split('T')[0],
     };
 
-    // Mock de validación async: simula que el ID no existe
+    // Valicacion asincrona para simular que el ID no existe
     mockProductosService.servicioGet.mockImplementation((url: string) => {
       if (url === 'bp/products/cinco') {
-        return of(null); // El ID no existe => válido
+        return of(null);
       }
-      // Para la carga de productos luego del guardado
-      return of({ data: [productoNuevo] });
+      return of({ data: [productoNuevo] }); // Cargar el producto
     });
 
-    // Mock del POST
+    // Simulación servicio POST
     mockProductosService.servicioPost.mockReturnValue(
       of({
         message: 'Product added successfully',
@@ -207,19 +206,16 @@ describe('FormularioIngreso', () => {
       }),
     );
 
-    // Rellenamos el formulario
+    // Rellenar el formulario
     component.formulario.patchValue({ ...productoNuevo });
 
-    tick(); // Espera a validaciones async
+    tick();
     fixture.detectChanges();
-
-    // Ejecutamos el guardado
     component.guardarNuevo();
-
-    tick(); // Espera al subscribe
+    tick();
     fixture.detectChanges();
 
-    // Validaciones
+    // Validar que se haya llamado al servicio POST
     expect(mockProductosService.servicioPost).toHaveBeenCalledWith(
       'bp/products',
       {

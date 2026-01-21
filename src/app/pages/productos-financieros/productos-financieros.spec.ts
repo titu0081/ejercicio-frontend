@@ -104,33 +104,48 @@ describe('ProductosFinancieros', () => {
     });
   });
 
-  it('debe abrir el modal de confirmación al eliminar un producto', () => {
-    component.eliminarElemento(productoMock);
-    expect(mockModalService.abrirModal).toHaveBeenCalledWith(
-      expect.objectContaining({
-        mensaje: expect.stringContaining('Tarjeta Titanium'),
-        callbackConfirmar: expect.any(Function),
-      }),
-    );
+  it('debe cerrar el dropdown al hacer click fuera', () => {
+    component.dropdownAbierto = 1;
+    component.cerrarDropdown();
+    expect(component.dropdownAbierto).toBeNull();
   });
 
-  it('debe llamar a eliminarProducto al confirmar en el modal', () => {
-    const spy = jest.spyOn(component, 'eliminarProducto');
-    mockModalService.abrirModal.mockImplementation((config: any) => {
-      config.callbackConfirmar();
-    });
-    component.eliminarElemento(productoMock);
-    expect(spy).toHaveBeenCalledWith(productoMock);
+  it('debe editar un producto', () => {
+    component.productos = [productoMock];
+    const spy = jest.spyOn(component, 'abrirFormulario');
+
+    component.editarElemento(0);
+
+    expect(component.dropdownAbierto).toBeNull();
+    expect(spy).toHaveBeenCalledWith(0);
   });
 
-  it('debe eliminar el producto correctamente', fakeAsync(() => {
-    mockProductosService.servicioGet.mockReturnValue(
-      of({ data: [productoMock] }),
-    );
-    component.eliminarProducto(productoMock);
+  it('debe restaurar productos si el filtro está vacío', () => {
+    component.productosTodos = [productoMock];
+    component.productos = [];
+
+    const event = { target: { value: '' } };
+    component.filtrarLotes(event);
+
+    expect(component.productos.length).toBe(1);
+  });
+
+  it('debe mostrar todos los productos cuando es TODOS', () => {
+    component.productos = [productoMock];
+    component.cantidadSeleccionada = 'TODOS';
+
+    component.actualizarProductosFiltrados();
+
+    expect(component.productosFiltrados.length).toBe(1);
+  });
+
+  it('debe manejar respuesta vacía del servicio', fakeAsync(() => {
+    mockProductosService.servicioGet.mockReturnValueOnce(of({ data: [] }));
+
+    component.mostrarProductos();
     tick();
-    expect(mockProductosService.servicioDelete).toHaveBeenCalledWith(
-      'bp/products/uno',
-    );
+
+    expect(component.productos).toEqual([]);
+    expect(component.cargando).toBe(false);
   }));
 });

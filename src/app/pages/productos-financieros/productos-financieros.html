@@ -19,13 +19,6 @@
     <div class="tablaScroll">
       <table class="tabla">
         <thead>
-          @if (cargando === true) {
-          <tr class="skeleton-row">
-            <td colspan="6">
-              <div class="skeleton-loader"></div>
-            </td>
-          </tr>
-          } @else {
           <tr>
             <th>Logo</th>
             <th>Nombre del producto</th>
@@ -34,16 +27,9 @@
             <th>Fecha de reestructuración</th>
             <th></th>
           </tr>
-          }
         </thead>
         <tbody>
-          @if (cargando) { @for (n of [1,2,3]; track $index) {
-          <tr class="skeleton-row">
-            <td colspan="6">
-              <div class="skeleton-loader"></div>
-            </td>
-          </tr>
-          } } @else { @for (producto of productosFiltrados; track $index) {
+          @for (producto of productosFiltrados; track $index) {
           <tr>
             <td>
               <img
@@ -77,7 +63,6 @@
                   [class.show]="dropdownAbierto === $index"
                 >
                   <a (click)="editarElemento($index)">Editar</a>
-                  <a (click)="eliminarElemento(producto)">Eliminar</a>
                 </div>
               </div>
             </td>
@@ -88,7 +73,7 @@
               <div class="sinProductos">No hay productos disponibles.</div>
             </td>
           </tr>
-          } }
+          }
         </tbody>
       </table>
     </div>

@@ -133,37 +133,6 @@ export class ProductosFinancieros implements OnInit {
     this.abrirFormulario(indexProducto);
   }
 
-  eliminarElemento(producto: Producto) {
-    this.modal.abrirModal({
-      mensaje: '¿Está seguro de eliminar el producto ' + producto.name + '?',
-      confirmarTexto: 'Confirmar',
-      cancelarTexto: 'Cancelar',
-      callbackConfirmar: () => {
-        this.eliminarProducto(producto);
-      },
-    });
-  }
-
-  eliminarProducto(productoEliminar: Producto) {
-    const urlEliminar = 'bp/products/' + productoEliminar.id;
-    this.servicioProductos.servicioDelete(urlEliminar).subscribe({
-      next: () => {
-        // Elimina de la lista sin recargar desde el backend
-        this.productos = this.productos.filter(
-          (producto) => producto.id !== productoEliminar.id,
-        );
-        this.productosTodos = [...this.productos];
-        this.actualizarProductosFiltrados();
-        this.cdr.detectChanges(); // Actualizar la vista
-      },
-      error: () => {
-        this.cargando = false;
-        this.productos = [];
-        this.cdr.detectChanges();
-      },
-    });
-  }
-
   actualizarProductosFiltrados() {
     if (this.cantidadSeleccionada === 'TODOS') {
       this.productosFiltrados = this.productos;
