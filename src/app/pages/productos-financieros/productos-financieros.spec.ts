@@ -72,7 +72,6 @@ describe('ProductosFinancieros', () => {
     );
     expect(component.productos.length).toBe(1);
     expect(component.productos[0].name).toBe('Tarjeta Titanium');
-    expect(component.cargando).toBe(false);
   }));
 
   it('debe manejar error al cargar productos', fakeAsync(() => {
@@ -82,7 +81,6 @@ describe('ProductosFinancieros', () => {
     component.mostrarProductos();
     tick();
     expect(component.productos).toEqual([]);
-    expect(component.cargando).toBe(false);
   }));
 
   it('debe filtrar productos correctamente', () => {
@@ -146,6 +144,5 @@ describe('ProductosFinancieros', () => {
     tick();
 
     expect(component.productos).toEqual([]);
-    expect(component.cargando).toBe(false);
   }));
 });

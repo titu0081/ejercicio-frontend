@@ -14,16 +14,13 @@ export class ProductosServices {
 
   private ruta: string = environment.urlProductos;
 
-  /**
-   * Obtiene una lista de productos
-   */
+  // Obtiene una lista de productos
+
   servicioGet(complemento: string): Observable<RespuestaProductos> {
     return this.httpClient.get<RespuestaProductos>(this.ruta + complemento);
   }
 
-  /**
-   * Crea un nuevo producto
-   */
+  // Crea un nuevo producto
   servicioPost(
     complemento: string,
     body: Partial<Producto>,
@@ -34,9 +31,7 @@ export class ProductosServices {
     );
   }
 
-  /**
-   * Actualiza un producto existente
-   */
+  // Actualiza un producto existente
   servicioPut(
     complemento: string,
     body: Partial<Producto>,
@@ -45,12 +40,5 @@ export class ProductosServices {
       this.ruta + complemento,
       body,
     );
-  }
-
-  /**
-   * Elimina un producto
-   */
-  servicioDelete(complemento: string): Observable<RespuestaProducto> {
-    return this.httpClient.delete<RespuestaProducto>(this.ruta + complemento);
   }
 }

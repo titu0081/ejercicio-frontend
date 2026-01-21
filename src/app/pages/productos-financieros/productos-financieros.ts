@@ -7,7 +7,6 @@ import {
 import { ProductosServices } from '../../services/productos.services';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalService } from '../../services/modal.services';
 import { CommonModule } from '@angular/common';
 import { Producto } from '../../models/producto.model';
 
@@ -23,13 +22,11 @@ export class ProductosFinancieros implements OnInit {
     private servicioProductos: ProductosServices,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private modal: ModalService,
   ) {}
 
   productos: Producto[] = [];
   productosTodos: Producto[] = [];
   productosFiltrados: Producto[] = [];
-  cargando: boolean = true;
   cantidadRegistros = ['TODOS', 5, 10, 20];
   cantidadSeleccionada: string | number = 5;
   dropdownAbierto: number | null = null;
@@ -76,7 +73,6 @@ export class ProductosFinancieros implements OnInit {
   mostrarProductos() {
     this.productos = [];
     this.productosTodos = [];
-    this.cargando = true;
 
     this.servicioProductos.servicioGet('bp/products').subscribe({
       next: (respuestaProductos) => {
@@ -86,12 +82,10 @@ export class ProductosFinancieros implements OnInit {
         } else {
           this.productos = [];
         }
-        this.cargando = false;
         this.actualizarProductosFiltrados();
         this.cdr.detectChanges();
       },
       error: () => {
-        this.cargando = false;
         this.productos = [];
         this.cdr.detectChanges();
       },
