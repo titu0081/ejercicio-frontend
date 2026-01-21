@@ -1,4 +1,4 @@
-# EjercicioFrontend
+# Ejercicio Frontend
 
 Versión de angular utilizada 20.0.4
 
